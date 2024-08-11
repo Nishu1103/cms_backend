@@ -5,6 +5,7 @@ const cors = require('cors');
 const path = require('path');
 const bodyParser = require('body-parser');
 
+
 const app = express();
 const pagesPath = path.join(__dirname, 'pages');
 
@@ -23,13 +24,7 @@ app.get('/', (req, res) => {
     // res.send("Welcome to OCMS Backend for Software Engineering Project ");
     res.sendFile(path.join(pagesPath, 'WelcomePage.html'));
 })
-
-// if ( process.env.NODE_ENV === "production" || 1) { 
-//     app.use(express.static(path.join(__dirname, "../client/build"))); 
-//     app.get("*", (req, res) => { 
-//         res.sendFile(path.resolve(__dirname, '../', 'client', 'build', 'index.html')); 
-//     })
-// }
+ 
 
 app.use((req, res, next) => {
     const err = new Error("Not Found");
@@ -44,12 +39,14 @@ app.use((err, req, res, next) => {
     res.status(status).json({message: message});
 })
 
+
 const DB_URL = process.env.MONGO_DB_URI;
 const PORT= process.env.PORT || 5000;
+console.log('Database URL:', DB_URL);
 mongoose.connect(DB_URL)
 .then(result => {
     console.log("Connected to database");
-    app.listen(5000,()=>console.log("Welcome to OCMS Backend"));
+    app.listen(PORT,()=>console.log("Welcome to OCMS Backend"));
     console.log("Server started at port 5000");
     console.log("http://localhost:5000");
 })
